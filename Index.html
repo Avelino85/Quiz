@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Cátia</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('https://i.postimg.cc/gc8LKDj6/1730014555619.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+        h1 {
+            margin: 5px 0;
+            font-size: 24px;
+            font-weight: bold;
+            transition: opacity 0.5s ease;
+        }
+        h2 {
+            margin: 5px 0;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        button {
+            background-color: #ff3366;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px 5px;
+            width: calc(100% - 10px);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        button:hover {
+            background-color: #ff6699;
+        }
+        .question {
+            display: none;
+            margin: 15px 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .question.show {
+            display: block;
+            opacity: 1;
+        }
+        .progress-bar {
+            height: 5px;
+            background-color: #ff3366;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+        .result {
+            margin-top: 20px;
+        }
+        .message {
+            font-size: 18px;
+            margin-top: 15px;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container" id="quizContainer">
+    <h1 id="mainMessage">Entre no meu mundo exclusivo +18. Está preparado(a)? 😘</h1>
+    
+    <div class="question show" id="start">
+        <h2>Olá, aqui fala a Cátia. Responda algumas perguntas rápidas pra gente ver se estamos na mesma vibe!</h2>
+        <button onclick="startQuiz()">Começar agora!</button>
+    </div>
+
+    <div class="question" id="question1">
+        <h2>1. Eu vendo conteúdo +18. Tá afim de ver mais?</h2>
+        <button onclick="nextQuestion(1, 'Perfeito! 😉 Sabia que você ia gostar. Vamos seguir.')">Sim</button>
+        <button onclick="endQuiz('Sem problema, volta quando estiver pronto(a). 😘')">Não</button>
+    </div>
+
+    <div class="question" id="question2">
+        <h2>2. Todo o meu conteúdo é pago. Tá tudo certo pra você?</h2>
+        <button onclick="nextQuestion(2, 'Maravilha! 😉 Eu sabia que você valoriza qualidade. Vamos em frente.')">Sim</button>
+        <button onclick="endQuiz('Entendi, se mudar de ideia, é só me chamar!')">Não</button>
+    </div>
+
+    <div class="question" id="question3">
+        <h2>3. Saídas só com quem está no meu grupo VIP por questoes  de segurança e exclusividade, sem isso, não.</h2>
+        <button onclick="nextQuestion(3, 'Isso aí! No grupo VIP, a exclusividade é garantida. 😘')">Sem problema</button>
+        <button onclick="nextQuestion(3, 'Beleza! O importante é que você saiba o que quer. Vamos continuar!')">Não quero!</button>
+    </div>
+
+    <div class="question" id="question4">
+        <h2>4. O que você prefere? Conteúdo exclusivo, saídas ou ambos?</h2>
+        <button onclick="showResult('fotos', 'Show! Vou te deixar bem servido com meu conteúdo exclusivo. 😘'); setLink('https://wa.link/qp8mxz')">Conteúdo Exclusivo</button>
+        <button onclick="showResult('programa', 'Agora as coisas estão ficando interessantes... 😏 Vamos falar de como você entra no grupo VIP.'); setLink('https://wa.link/31elp1')">Saídas</button>
+        <button onclick="showResult('tudo', 'Você quer tudo, hein? Bem-vindo ao meu mundo exclusivo. Vamos em frente!'); setLink('https://wa.link/cc6tqb')">Ambos</button>
+    </div>
+
+    <div class="result" id="resultContainer" style="display:none;">
+        <h2 id="resultMessage"></h2>
+        <a id="resultLink" href="#" target="_blank">
+            <button id="ctaButton">Falar com a Catia</button>
+        </a>
+    </div>
+
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<script>
+    let currentQuestionIndex = 0;
+    const questions = document.querySelectorAll(".question");
+    const progressBar = document.getElementById("progressBar");
+    const mainMessage = document.getElementById("mainMessage");
+    const resultLink = document.getElementById("resultLink");
+    const ctaButton = document.getElementById("ctaButton");
+
+    function startQuiz() {
+        questions[currentQuestionIndex].classList.remove("show");
+        currentQuestionIndex++;
+        updateMainMessage();
+        questions[currentQuestionIndex].classList.add("show");
+        updateProgressBar();
+    }
+
+    function nextQuestion(index, message) {
+        questions[currentQuestionIndex].classList.remove("show");
+        currentQuestionIndex++;
+        updateMainMessage(message);
+        questions[currentQuestionIndex].classList.add("show");
+        updateProgressBar();
+    }
+
+    function showResult(choice, message) {
+        document.getElementById("resultMessage").innerText = message;
+        document.getElementById("resultContainer").style.display = "block";
+        questions[currentQuestionIndex].style.display = "none";
+        updateProgressBar();
+    }
+
+    function setLink(url) {
+        resultLink.href = url;
+    }
+
+    function updateMainMessage(message) {
+        mainMessage.innerText = message || "Vamos começar a nossa conversa! 😉";
+        mainMessage.style.opacity = '0';
+        setTimeout(() => {
+            mainMessage.style.opacity = '1';
+        }, 100);
+    }
+
+    function updateProgressBar() {
+        const progressPercentage = ((currentQuestionIndex + 1) / questions.length) * 100;
+        progressBar.style.width = progressPercentage + "%";
+    }
+
+    function endQuiz(message) {
+        alert(message);
+        window.location.reload();
+    }
+</script>
+
+</body>
+</html>
